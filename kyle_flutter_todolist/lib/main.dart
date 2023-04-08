@@ -1,172 +1,93 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kyle_flutter_todolist/controllers/Controller.dart';
+import 'package:kyle_flutter_todolist/bindings/all_controller_binding.dart';
+import 'package:kyle_flutter_todolist/logic/main_logic.dart';
+import 'package:kyle_flutter_todolist/pages/calendar/calendar_page.dart';
+import 'package:kyle_flutter_todolist/pages/category/category_page.dart';
+import 'package:kyle_flutter_todolist/pages/tasks/task_binding.dart';
+import 'package:kyle_flutter_todolist/pages/tasks/task_page.dart';
+import 'package:kyle_flutter_todolist/states/main_state.dart';
+
+import 'package:kyle_flutter_todolist/views/mine_page.dart';
 
 void main() {
-  runApp(GetMaterialApp(
-    // debugShowCheckedModeBanner: false,
-    // // initialRoute: Routes.SPLASH,
-    // // theme: appThemeData,
-    // defaultTransition: Transition.fade,
-    // initialBinding: SplashBinding(),
-    // getPages: AppPages.pages,
-    home: Home(),
-  ));
+  // runApp(GetMaterialApp(
+  //   getPages: RouteConfig.getPages,
+  //   home: Home(),
+  // ));
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      initialBinding: AllControllerBinding(),
+      debugShowCheckedModeBanner: false,
+      getPages: RouteConfig.getPages,
+      home: Home(),
+    );
+  }
 }
 
 class Home extends StatelessWidget {
-  const Home({super.key});
+  final mainLogic = Get.put(MainLogic());
+  final MainState mainState = Get.find<MainLogic>().state;
 
-  @override
-  Widget build(BuildContext context) {
-    final MyController c = Get.put(MyController());
+  late List<Widget> _bodyPages = [TaskPage(), CalendarPage(), MinePage()];
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Obx(() => Text('Clicks: ${c.count}')),
-      ),
-      body: Center(
-        child: ElevatedButton(
-            onPressed: () => Get.to(Other()), child: Text('Go to Other')),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          c.increment();
-        },
-        child: Icon(Icons.add),
-      ),
-    );
-  }
-}
+  List<BottomNavigationBarItem> barItems = [
+    const BottomNavigationBarItem(
+        icon: Icon(Icons.feed_outlined),
+        label: '任务',
+        activeIcon: Icon(Icons.feed)),
+    const BottomNavigationBarItem(
+        icon: Icon(Icons.calendar_today_outlined),
+        label: '日历',
+        activeIcon: Icon(Icons.calendar_month)),
+    const BottomNavigationBarItem(
+        icon: Icon(Icons.person_outline),
+        label: '我的',
+        activeIcon: Icon(Icons.person)),
+  ];
 
-class Other extends StatelessWidget {
-  // const Other({super.key});
-
-  final MyController c = Get.find();
+  final PageController _pageController = PageController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text('${c.count}'),
-      ),
-    );
+        body: PageView(
+          physics: NeverScrollableScrollPhysics(),
+          controller: _pageController,
+          children: _bodyPages,
+          onPageChanged: (index) {
+            mainLogic.changeIndex(index);
+          },
+        ),
+        bottomNavigationBar: GetBuilder<MainLogic>(
+          builder: (logic) => BottomNavigationBar(
+              currentIndex: mainState.index,
+              items: barItems.map((e) => e).toList(),
+              onTap: (index) {
+                mainLogic.changeIndex(index);
+                _pageController.jumpToPage(index);
+              }),
+        ));
   }
 }
 
+class RouteConfig {
+  static const String taskPage = '/taskPage';
+  static const String calendarPage = '/calendarPage';
+  static const String minePage = '/minePage';
+  static const String categoryPage = '/categoryPage';
 
-// import 'package:flutter/material.dart';
-
-// void main() {
-//   runApp(const MyApp());
-// }
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-
-//   // This widget is the root of your application.
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Flutter Demo',
-//       theme: ThemeData(
-//         // This is the theme of your application.
-//         //
-//         // Try running your application with "flutter run". You'll see the
-//         // application has a blue toolbar. Then, without quitting the app, try
-//         // changing the primarySwatch below to Colors.green and then invoke
-//         // "hot reload" (press "r" in the console where you ran "flutter run",
-//         // or simply save your changes to "hot reload" in a Flutter IDE).
-//         // Notice that the counter didn't reset back to zero; the application
-//         // is not restarted.
-//         primarySwatch: Colors.blue,
-//       ),
-//       home: const MyHomePage(title: 'Flutter Demo Home Page'),
-//     );
-//   }
-// }
-
-// class MyHomePage extends StatefulWidget {
-//   const MyHomePage({super.key, required this.title});
-
-//   // This widget is the home page of your application. It is stateful, meaning
-//   // that it has a State object (defined below) that contains fields that affect
-//   // how it looks.
-
-//   // This class is the configuration for the state. It holds the values (in this
-//   // case the title) provided by the parent (in this case the App widget) and
-//   // used by the build method of the State. Fields in a Widget subclass are
-//   // always marked "final".
-
-//   final String title;
-
-//   @override
-//   State<MyHomePage> createState() => _MyHomePageState();
-// }
-
-// class _MyHomePageState extends State<MyHomePage> {
-//   int _counter = 0;
-
-//   void _incrementCounter() {
-//     setState(() {
-//       // This call to setState tells the Flutter framework that something has
-//       // changed in this State, which causes it to rerun the build method below
-//       // so that the display can reflect the updated values. If we changed
-//       // _counter without calling setState(), then the build method would not be
-//       // called again, and so nothing would appear to happen.
-//       _counter++;
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     // This method is rerun every time setState is called, for instance as done
-//     // by the _incrementCounter method above.
-//     //
-//     // The Flutter framework has been optimized to make rerunning build methods
-//     // fast, so that you can just rebuild anything that needs updating rather
-//     // than having to individually change instances of widgets.
-//     return Scaffold(
-//       appBar: AppBar(
-//         // Here we take the value from the MyHomePage object that was created by
-//         // the App.build method, and use it to set our appbar title.
-//         title: Text(widget.title),
-//       ),
-//       body: Center(
-//         // Center is a layout widget. It takes a single child and positions it
-//         // in the middle of the parent.
-//         child: Column(
-//           // Column is also a layout widget. It takes a list of children and
-//           // arranges them vertically. By default, it sizes itself to fit its
-//           // children horizontally, and tries to be as tall as its parent.
-//           //
-//           // Invoke "debug painting" (press "p" in the console, choose the
-//           // "Toggle Debug Paint" action from the Flutter Inspector in Android
-//           // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-//           // to see the wireframe for each widget.
-//           //
-//           // Column has various properties to control how it sizes itself and
-//           // how it positions its children. Here we use mainAxisAlignment to
-//           // center the children vertically; the main axis here is the vertical
-//           // axis because Columns are vertical (the cross axis would be
-//           // horizontal).
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             const Text(
-//               'You have pushed the button this many times:',
-//             ),
-//             Text(
-//               '$_counter',
-//               style: Theme.of(context).textTheme.headlineMedium,
-//             ),
-//           ],
-//         ),
-//       ),
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: _incrementCounter,
-//         tooltip: 'Increment',
-//         child: const Icon(Icons.add),
-//       ), // This trailing comma makes auto-formatting nicer for build methods.
-//     );
-//   }
-// }
+  static final List<GetPage> getPages = [
+    GetPage(name: taskPage, page: () => TaskPage(), binding: TaskBinding()),
+    GetPage(name: calendarPage, page: () => CalendarPage()),
+    GetPage(name: minePage, page: () => MinePage()),
+    GetPage(name: categoryPage, page: () => CategoryPage()),
+  ];
+}
