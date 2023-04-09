@@ -27,6 +27,15 @@ class TodoService {
 
     return list.where(predicate).toList();
   }
+
+  void delete(int id) {
+    list.removeWhere((element) => element.id == id);
+  }
+
+  // void update(TodoItem item){
+
+  // }
+
   // List<TodoItem> getAll() {
   //   return list;
   // }

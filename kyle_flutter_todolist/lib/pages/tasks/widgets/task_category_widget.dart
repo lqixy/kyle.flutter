@@ -33,6 +33,8 @@ class TaskCategoryWidget extends StatelessWidget {
                                             onPressed: () {
                                               // controller
                                               //     .getAllByCategoryId(e.id);
+                                              controller
+                                                  .selectedCategoryId(e.id);
                                             },
                                             child: Text(e.title)),
                                       ))

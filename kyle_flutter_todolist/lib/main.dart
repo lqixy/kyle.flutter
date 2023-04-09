@@ -58,21 +58,28 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: PageView(
-          physics: NeverScrollableScrollPhysics(),
-          controller: _pageController,
-          children: _bodyPages,
-          onPageChanged: (index) {
-            mainLogic.changeIndex(index);
-          },
+        body: GetBuilder<MainLogic>(
+          builder: (controller) {
+            
+            return _bodyPages[mainState.index];
+             },
         ),
+        // body: PageView(
+        //   // physics: NeverScrollableScrollPhysics(),
+        //   // controller: _pageController,
+        //   children: _bodyPages,
+        //   onPageChanged: (index) {
+        //     mainLogic.changeIndex(index);
+        //   },
+        // ),
         bottomNavigationBar: GetBuilder<MainLogic>(
           builder: (logic) => BottomNavigationBar(
               currentIndex: mainState.index,
               items: barItems.map((e) => e).toList(),
               onTap: (index) {
                 mainLogic.changeIndex(index);
-                _pageController.jumpToPage(index);
+                print(index);
+                // _pageController.jumpToPage(index);
               }),
         ));
   }

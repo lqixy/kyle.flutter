@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:get/get.dart';
 import 'package:kyle_flutter_todolist/common/date_util.dart';
 import 'package:kyle_flutter_todolist/service/todo_service.dart';
@@ -13,10 +14,28 @@ class TodoController extends GetxController {
   @override
   void onInit() {
     var list = service.get();
+
+    var eventDays = list.groupListsBy((element) => element.deadline);
+
     state = TodoState(todoList: list);
 
     super.onInit();
   }
+
+  void reloadData({int? categoryId, DateTime? selectedDay}) {
+    if (categoryId != null) {
+      getAllByCategoryId(categoryId);
+    }
+    if (selectedDay != null) {
+      getByDeadline(selectedDay);
+    }
+  }
+
+  // void reloadEventDays() {
+  //   var list = service.get();
+
+  //   state.eventDays = list.groupListsBy((element) => element.deadline);
+  // }
 
   void getAllByCategoryId(int id) {
     if (id > 0) {
@@ -36,6 +55,10 @@ class TodoController extends GetxController {
 
   void deleteTodoItem(int id) {
     state.todoList.removeWhere((element) => element.id == id);
+    service.delete(id);
+
+    // reloadEventDays();
+
     update();
   }
 

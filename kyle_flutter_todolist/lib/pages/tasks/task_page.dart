@@ -5,6 +5,8 @@ import 'package:kyle_flutter_todolist/pages/tasks/task_state.dart';
 import 'package:kyle_flutter_todolist/pages/tasks/widgets/task_category_widget.dart';
 import 'package:kyle_flutter_todolist/widgets/todo_list_item_widget.dart';
 
+import '../../logic/todo_controller.dart';
+
 // class TaskPageV2 extends StatefulWidget {
 //   const TaskPageV2({super.key});
 
@@ -63,23 +65,8 @@ import 'package:kyle_flutter_todolist/widgets/todo_list_item_widget.dart';
 // }
 
 class TaskPage extends StatelessWidget {
-  // const TaskPage({super.key});
-
   TaskController taskController = Get.find<TaskController>();
   TaskState state = Get.find<TaskController>().state;
-  // TodoController todoController = Get.find<TodoController>();
-
-  // void deleteTodoItem(int id) {
-  //   taskController.deleteTodoItem(id);
-  // }
-
-  // void staredTodoItem(int id) {
-  //   taskController.staredTodoItem(id);
-  // }
-
-  // void checkedTodoItem(int id) {
-  //   taskController.checkedTodoItem(id);
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +96,10 @@ class TaskPage extends StatelessWidget {
             padding: EdgeInsets.all(8),
             child: TaskCategoryWidget(),
           ),
-          Expanded(child: TodolistItemWidgetV2()
+          Expanded(
+              child: TodolistItemWidgetV2(
+            categoryId: state.categoryId,
+          )
               //     SlidableAutoCloseBehavior(child: GetBuilder<TaskController>(
               //   builder: (controller) {
               //     return ListView.builder(

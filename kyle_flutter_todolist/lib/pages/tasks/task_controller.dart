@@ -14,42 +14,17 @@ class TaskController extends GetxController {
 
   @override
   void onInit() {
-    // var list = todoService.getAll();
-    // var categories = categoryService.getAll();
     state.categories = categoryService.getAll();
-    // state.todoItems = todoService.get();
+
     super.onInit();
   }
-
-  // void deleteTodoItem(int id) {
-  //   state.todoItems.removeWhere((element) => element.id == id);
-  //   update();
-  // }
-
-  // void staredTodoItem(int index) {
-  //   var cur = state.todoItems.firstWhere((element) => element.id == index);
-  //   cur.isMark = !cur.isMark;
-  //   // cur.mark(!cur.isMark);
-  //   update();
-  // }
-
-  // void checkedTodoItem(int index) {
-  //   var cur = state.todoItems.firstWhere((element) => element.id == index);
-  //   // cur.setFinished(finished);
-  //   cur.finished = !cur.finished;
-  //   update();
-  // }
 
   void jumpToCategoryPage() {
     Get.toNamed(RouteConfig.categoryPage);
   }
 
-  // void getAllByCategoryId(int id) {
-  //   if (id > 0) {
-  //     state.todoItems = todoService.getAllByCategoryId(id);
-  //   } else {
-  //     state.todoItems = todoService.get();
-  //   }
-  //   update();
-  // }
+  void selectedCategoryId(int id) {
+    state.categoryId = id;
+    update();
+  }
 }
