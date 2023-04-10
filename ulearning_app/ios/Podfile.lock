@@ -1,0 +1,56 @@
+PODS:
+  - "agconnect_apm (1.4.0+300)":
+    - AGConnectAPM (= 1.2.1.302)
+    - Flutter
+  - AGConnectABTest (1.8.0.300):
+    - AGConnectCredential (~> 1.4)
+  - AGConnectAPM (1.2.1.302):
+    - AGConnectCore (>= 1.1.0)
+    - AGConnectRemoteConfig (>= 1.1.0)
+    - HiAnalytics
+  - AGConnectCore (1.8.0.300):
+    - HMFoundation (~> 1.4)
+  - AGConnectCredential (1.8.0.300):
+    - AGConnectCore (~> 1.4)
+  - AGConnectRemoteConfig (1.8.0.300):
+    - AGConnectABTest (~> 1.4)
+    - AGConnectCredential (~> 1.7)
+  - Flutter (1.0.0)
+  - HiAnalytics (6.10.0.301):
+    - AGConnectCredential
+  - HMFoundation (1.8.0.300)
+
+DEPENDENCIES:
+  - agconnect_apm (from `.symlinks/plugins/agconnect_apm/ios`)
+  - Flutter (from `Flutter`)
+
+SPEC REPOS:
+  trunk:
+    - AGConnectABTest
+    - AGConnectAPM
+    - AGConnectCore
+    - AGConnectCredential
+    - AGConnectRemoteConfig
+    - HiAnalytics
+    - HMFoundation
+
+EXTERNAL SOURCES:
+  agconnect_apm:
+    :path: ".symlinks/plugins/agconnect_apm/ios"
+  Flutter:
+    :path: Flutter
+
+SPEC CHECKSUMS:
+  agconnect_apm: 65e2cad819686449ecba78b0aab70a91d8a511e8
+  AGConnectABTest: cf58810de5526027ed810329716e0d50656a2cf9
+  AGConnectAPM: 1e7fa1564175810c0088ef61463bc5abedb89846
+  AGConnectCore: 4d95388b97ccbc00c7eb1895d832d5429f847f9f
+  AGConnectCredential: 52b6a1846193e7ea83610b78fb4b82d516df4936
+  AGConnectRemoteConfig: d32140331aeb730bd47d082a8efebb95bed062a7
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  HiAnalytics: 4e40ccc8a535128094ac3a2b2af32f3f4448b428
+  HMFoundation: 578af8b08444653a722a62e32ec681d954775942
+
+PODFILE CHECKSUM: 41e40559c57159b9155c8b4d3f3c5f05857a62cb
+
+COCOAPODS: 1.12.0
